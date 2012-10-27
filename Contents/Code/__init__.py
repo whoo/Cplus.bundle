@@ -40,10 +40,10 @@ def MainMenu():
   dir = MediaContainer(title1="Canal Plus", content = 'Items', art = R('art-default.jpg'))
   dir.viewGroup = 'ShowList'
 
-  dir.Append(Function(DirectoryItem(sub_category, title="Le Zapping" , thumb=R("Zapping.jpg")), Emission_cat='756696', title='Zapping'))
-  dir.Append(Function(DirectoryItem(sub_category, title="Les Guignols" , thumb=R("Guignols.jpg")), Emission_cat='756876', title='Guignols'))
-  dir.Append(Function(DirectoryItem(sub_category, title="Le Petit Journal" , thumb=R("petitjournal.jpg")), Emission_cat='756887', title='PetitJournal'))
-  dir.Append(Function(DirectoryItem(sub_category, title="Gros Land" , thumb=R("grosland.jpg")), Emission_cat='757232', title='PetitJournal'))
+  dir.Append(Function(DirectoryItem(sub_category, title="Le Zapping" , thumb=R("LeZapping.jpg")), Emission_cat='756696', title='Zapping'))
+  dir.Append(Function(DirectoryItem(sub_category, title="Les Guignols" , thumb=R("LesGuignols.jpg")), Emission_cat='756876', title='Guignols'))
+  dir.Append(Function(DirectoryItem(sub_category, title="Le Petit Journal" , thumb=R("LePetitJournal.jpg")), Emission_cat='756887', title='PetitJournal'))
+  dir.Append(Function(DirectoryItem(sub_category, title="GroLand" , thumb=R("GroLand.jpg")), Emission_cat='757232', title='PetitJournal'))
   return dir
 
 
