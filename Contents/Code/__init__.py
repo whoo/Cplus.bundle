@@ -40,9 +40,10 @@ def MainMenu():
   dir = MediaContainer(title1="Canal Plus", content = 'Items', art = R('art-default.jpg'))
   dir.viewGroup = 'ShowList'
 
-  dir.Append(Function(DirectoryItem(sub_category, title="Zapping" , thumb=R("Zapping.jpg")), Emission_cat='756696', title='Zapping'))
-  dir.Append(Function(DirectoryItem(sub_category, title="Guignlos" , thumb=R("Guignols.jpg")), Emission_cat='756876', title='Guignols'))
-  dir.Append(Function(DirectoryItem(sub_category, title="PetitJournal" , thumb=R("petitjournal.jpg")), Emission_cat='756887', title='PetitJournal'))
+  dir.Append(Function(DirectoryItem(sub_category, title="Le Zapping" , thumb=R("Zapping.jpg")), Emission_cat='756696', title='Zapping'))
+  dir.Append(Function(DirectoryItem(sub_category, title="Les Guignols" , thumb=R("Guignols.jpg")), Emission_cat='756876', title='Guignols'))
+  dir.Append(Function(DirectoryItem(sub_category, title="Le Petit Journal" , thumb=R("petitjournal.jpg")), Emission_cat='756887', title='PetitJournal'))
+  dir.Append(Function(DirectoryItem(sub_category, title="Gros Land" , thumb=R("grosland.jpg")), Emission_cat='757232', title='PetitJournal'))
   return dir
 
 
@@ -63,6 +64,14 @@ def sub_category (sender, Emission_cat, title = None, replaceParent=False, value
   	url= s.find('MEDIA').find('VIDEOS').find('HD').text
   	img= s.find('MEDIA').find('IMAGES').find('PETIT').text
 	com= s.find('INFOS').find('TITRAGE').find('SOUS_TITRE').text
-	dir.Append(VideoItem(url,rub+" "+cat,'',rub+" "+cat+" du "+inf+" "+com,'',img))
+#Replace 
+# rtmp://vod-fms.canalplus.fr/ondemand/videos
+#by http://vod-flash.canalplus.fr/WWWPLUS/STREAMING
+	hack="?secret=pqzerjlsmdkjfoiuerhsdlfknaes"
+	url=url.replace('rtmp://vod-fms.canalplus.fr/ondemand/videos','http://vod-flash.canalplus.fr/WWWPLUS/STREAMING')+hack
+	
+	if not (com):
+		com="none"
+	dir.Append(VideoItem(url,rub+" "+cat,'',rub+"\n"+inf+"\n"+com,'',img))
   return dir
 ####################################################################################################
