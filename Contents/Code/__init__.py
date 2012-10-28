@@ -1,10 +1,27 @@
 # -*- coding: Latin-1 -*-
 
 """
-Based on 
-Pierre Della Nave 
-SesameStreet Plugin
-France2 Plugin by Erwan Loisant
+
+this program grab information from Cplus and provide content for plex application
+Based on reading of
+	Pierre Della Nave 
+	SesameStreet Plugin
+	France2 Plugin by Erwan Loisant
+
+Copyright (C) 2012	Dominique DERRIER
+
+This program is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 
 """
@@ -53,7 +70,6 @@ def sub_category (sender, Emission_cat, title = None, replaceParent=False, value
   dir = MediaContainer(title1="", title2=title, replaceParent=replaceParent)
   dir.viewGroup = 'Details'
   base_address = 'http://service.canal-plus.com/video/rest/getVideosLiees/cplus/'+Emission_cat
-  logo_string = 'logo_h.jpg'
 
   xml_sections = ETXML.parse(urllib.urlopen(base_address))
   sections = xml_sections.getroot()
