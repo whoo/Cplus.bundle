@@ -25,15 +25,15 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 
 """
-import PMS
-from PMS import Plugin, Log, XML, HTTP
-from PMS.Objects import *
-from PMS.Shortcuts import *
+#import PMS
+#from PMS import Plugin, Log, XML, HTTP
+#from PMS.Objects import *
+#from PMS.Shortcuts import *
 import re
 import unicodedata
 ## NOT SURE beCAUSE it porduce some error
 import xml.etree.ElementTree as ETXML
-
+import urllib
 
 PLUGIN_PREFIX           = "/video/Cplus"
 PLUGIN_ID               = "com.plexapp.plugins.Cplus"
@@ -61,6 +61,8 @@ def MainMenu():
   dir.Append(Function(DirectoryItem(sub_category, title="Les Guignols" , thumb=R("LesGuignols.jpg")), Emission_cat='756876', title='Guignols'))
   dir.Append(Function(DirectoryItem(sub_category, title="Le Petit Journal" , thumb=R("LePetitJournal.jpg")), Emission_cat='756887', title='PetitJournal'))
   dir.Append(Function(DirectoryItem(sub_category, title="GroLand" , thumb=R("GroLand.jpg")), Emission_cat='757232', title='PetitJournal'))
+  dir.Append(Function(DirectoryItem(sub_category, title="Salut Les Terriens" , thumb=R("GroLand.jpg")), Emission_cat='757195', title='Salut Les Terriens'))
+  dir.Append(Function(DirectoryItem(sub_category, title="Papillion" , thumb=R("GroLand.jpg")), Emission_cat='757100', title='Papillion'))
   return dir
 
 
@@ -73,13 +75,13 @@ def sub_category (sender, Emission_cat, title = None, replaceParent=False, value
 
   xml_sections = ETXML.parse(urllib.urlopen(base_address))
   sections = xml_sections.getroot()
-  for s in sections:
-  	rub= s.find('RUBRIQUAGE').find('RUBRIQUE').text
-  	cat= s.find('RUBRIQUAGE').find('CATEGORIE').text
-  	inf= s.find('INFOS').find('PUBLICATION').find('DATE').text
-  	url= s.find('MEDIA').find('VIDEOS').find('HD').text
-  	img= s.find('MEDIA').find('IMAGES').find('PETIT').text
-	com= s.find('INFOS').find('TITRAGE').find('SOUS_TITRE').text
+  for s in range(0,len(sections)):
+  	rub= sections[s].find('RUBRIQUAGE').find('RUBRIQUE').text
+  	cat= sections[s].find('RUBRIQUAGE').find('CATEGORIE').text
+  	inf= sections[s].find('INFOS').find('PUBLICATION').find('DATE').text
+  	url= sections[s].find('MEDIA').find('VIDEOS').find('HD').text
+  	img= sections[s].find('MEDIA').find('IMAGES').find('PETIT').text
+	com= sections[s].find('INFOS').find('TITRAGE').find('SOUS_TITRE').text
 #Replace 
 # rtmp://vod-fms.canalplus.fr/ondemand/videos
 #by http://vod-flash.canalplus.fr/WWWPLUS/STREAMING
