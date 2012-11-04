@@ -1,95 +1,82 @@
 # -*- coding: Latin-1 -*-
-
-"""
-
-this program grab information from Cplus and provide content for plex application
-Based on reading of
-	Pierre Della Nave 
-	SesameStreet Plugin
-	France2 Plugin by Erwan Loisant
-
-Copyright (C) 2012	Dominique DERRIER
-
-This program is free software: you can redistribute it and/or modify
-it under the terms of the GNU General Public License as published by
-the Free Software Foundation, either version 3 of the License, or
-(at your option) any later version.
-
-This program is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-GNU General Public License for more details.
-
-You should have received a copy of the GNU General Public License
-along with this program.  If not, see <http://www.gnu.org/licenses/>.
-
-
-"""
-#import PMS
-#from PMS import Plugin, Log, XML, HTTP
-#from PMS.Objects import *
-#from PMS.Shortcuts import *
 import re
-import unicodedata
-## NOT SURE beCAUSE it porduce some error
-import xml.etree.ElementTree as ETXML
-import urllib
+
+"""
+"""
 
 PLUGIN_PREFIX           = "/video/Cplus"
 PLUGIN_ID               = "com.plexapp.plugins.Cplus"
 PLUGIN_REVISION         = 0.1
 PLUGIN_UPDATES_ENABLED  = True
-
 CACHE_INTERVAL = 3600 * 2
+ICON="icon-default.png"
+ART= "bg-default.jpg"
+NAME="CPlus"
 
 ####################################################################################################
 def Start():
-  Plugin.AddPrefixHandler(PLUGIN_PREFIX, MainMenu, 'Cplus', 'cplus-default.jpg', 'bg-default.jpg')
+  Plugin.AddPrefixHandler(PLUGIN_PREFIX, MainMenu,NAME,R(ICON),R(ART))
   Plugin.AddViewGroup("Details", viewMode="InfoList", mediaType="items")
   Plugin.AddViewGroup("ShowList", viewMode="List", mediaType="items")
   MediaContainer.title1 = 'Cplus'
   MediaContainer.content = 'Items'
-  MediaContainer.art = R('bg-default.jpg')
+  MediaContainer.art = R(ART)
   HTTP.SetCacheTime(CACHE_INTERVAL)
 
 ####################################################################################################
 def MainMenu():
-  dir = MediaContainer(title1="Canal Plus", content = 'Items', art = R('art-default.jpg'))
+  dir = MediaContainer(title1="Canal Plus", content = 'Items', art = R(ART))
   dir.viewGroup = 'ShowList'
-
-  dir.Append(Function(DirectoryItem(sub_category, title="Le Zapping" , thumb=R("LeZapping.jpg")), Emission_cat='756696', title='Zapping'))
-  dir.Append(Function(DirectoryItem(sub_category, title="Les Guignols" , thumb=R("LesGuignols.jpg")), Emission_cat='756876', title='Guignols'))
-  dir.Append(Function(DirectoryItem(sub_category, title="Le Petit Journal" , thumb=R("LePetitJournal.jpg")), Emission_cat='756887', title='PetitJournal'))
-  dir.Append(Function(DirectoryItem(sub_category, title="GroLand" , thumb=R("GroLand.jpg")), Emission_cat='757232', title='PetitJournal'))
-  dir.Append(Function(DirectoryItem(sub_category, title="Salut Les Terriens" , thumb=R("GroLand.jpg")), Emission_cat='757195', title='Salut Les Terriens'))
-  dir.Append(Function(DirectoryItem(sub_category, title="Papillion" , thumb=R("GroLand.jpg")), Emission_cat='757100', title='Papillion'))
+  dir.Append(Function(DirectoryItem(sub_category, title="Le Zapping" , thumb=R("LeZapping.jpg")), Emission_cat='1830', stitle='zapping'))
+  dir.Append(Function(DirectoryItem(sub_category, title="Les Guignols" , thumb=R("LesGuignols.jpg")), Emission_cat='1784', stitle='info'))
+  dir.Append(Function(DirectoryItem(sub_category, title="Le Petit Journal" , thumb=R("LePetitJournal.jpg")), Emission_cat='3351', stitle='le-petit-journal'))
+  dir.Append(Function(DirectoryItem(sub_category, title="GroLand" , thumb=R("GroLand.jpg")), Emission_cat='1787', stitle='groland.con'))
+  dir.Append(Function(DirectoryItem(sub_category, title="Salut Les Terriens" , thumb=R("terriens.jpg")), Emission_cat='3350', stitle='terriens'))
+  dir.Append(Function(DirectoryItem(sub_category, title="Papillon" , thumb=R("Papliion.jpg")), Emission_cat='3356', stitle='papillon'))
   return dir
 
 
 ####################################################################################################
-def sub_category (sender, Emission_cat, title = None, replaceParent=False, values=None):
+def sub_category (sender, Emission_cat, title = None, replaceParent=False, values=None,stitle=False):
+	dir = MediaContainer(title1="", title2=title, replaceParent=replaceParent)
+	dir.viewGroup = 'Details'
 
-  dir = MediaContainer(title1="", title2=title, replaceParent=replaceParent)
-  dir.viewGroup = 'Details'
-  base_address = 'http://service.canal-plus.com/video/rest/getVideosLiees/cplus/'+Emission_cat
+	mod=stitle
+	idd=Emission_cat
+	
+	site_url='http://www.canalplus.fr/c/pid'+idd
+	fhtml=HTML.ElementFromURL(site_url)
+	string= XML.StringFromElement(fhtml)
+	lst= re.findall(mod+'.*vid=([0-9]*)',string)
+	Evnt= max(lst)
 
-  xml_sections = ETXML.parse(urllib.urlopen(base_address))
-  sections = xml_sections.getroot()
-  for s in range(0,len(sections)):
-  	rub= sections[s].find('RUBRIQUAGE').find('RUBRIQUE').text
-  	cat= sections[s].find('RUBRIQUAGE').find('CATEGORIE').text
-  	inf= sections[s].find('INFOS').find('PUBLICATION').find('DATE').text
-  	url= sections[s].find('MEDIA').find('VIDEOS').find('HD').text
-  	img= sections[s].find('MEDIA').find('IMAGES').find('PETIT').text
-	com= sections[s].find('INFOS').find('TITRAGE').find('SOUS_TITRE').text
-#Replace 
+	base_address = 'http://service.canal-plus.com/video/rest/getVideosLiees/cplus/'+Evnt
+	data=XML.ElementFromURL(base_address)
+	hack="?secret=pqzerjlsmdkjfoiuerhsdlfknaes"
+	for video in data.xpath('//VIDEO'):
+		id= video.xpath('ID')[0].text
+		rub= video.xpath('RUBRIQUAGE/RUBRIQUE')[0].text
+		cat= video.xpath('RUBRIQUAGE/CATEGORIE')[0].text
+		dat= video.xpath('INFOS/PUBLICATION/DATE')[0].text
+		url= video.xpath('MEDIA/VIDEOS/HD')[0].text
+		img= video.xpath('MEDIA/IMAGES/GRAND')[0].text
+		com= video.xpath('INFOS/TITRAGE/TITRE')[0].text
+		com= com+ " "+video.xpath('INFOS/TITRAGE/SOUS_TITRE')[0].text
+		url=url.replace('rtmp://vod-fms.canalplus.fr/ondemand/videos','http://vod-flash.canalplus.fr/WWWPLUS/STREAMING')+hack
+		dir.Append(VideoItem(url,rub+" "+cat,'',com,'',img))
+ 	return dir
+		
+#  xml_sections = ETXML.parse(urllib.urlopen(base_address))
+#  sections = xml_sections.getroot()
+#  for s in range(0,len(sections)):
+#  	rub= sections[s].find('RUBRIQUAGE').find('RUBRIQUE').text
+#  	cat= sections[s].find('RUBRIQUAGE').find('CATEGORIE').text
+#  	inf= sections[s].find('INFOS').find('PUBLICATION').find('DATE').text
+#  	url= sections[s].find('MEDIA').find('VIDEOS').find('HD').text
+#  	img= sections[s].find('MEDIA').find('IMAGES').find('PETIT').text
+#	com= sections[s].find('INFOS').find('TITRAGE').find('SOUS_TITRE').text
+##Replace 
 # rtmp://vod-fms.canalplus.fr/ondemand/videos
 #by http://vod-flash.canalplus.fr/WWWPLUS/STREAMING
-	hack="?secret=pqzerjlsmdkjfoiuerhsdlfknaes"
-	url=url.replace('rtmp://vod-fms.canalplus.fr/ondemand/videos','http://vod-flash.canalplus.fr/WWWPLUS/STREAMING')+hack
-	
-	if not (com):
-		com="none"
-	dir.Append(VideoItem(url,rub+" "+cat,'',rub+"\n"+inf+"\n"+com,'',img))
-  return dir
+#	dir.Append(VideoItem(url,rub+" "+cat,'',rub+"\n"+inf+"\n"+com,'',img))
 ####################################################################################################
