@@ -28,7 +28,7 @@ def MainMenu():
   dir = MediaContainer(title1="Canal Plus", content = 'Items', art = R(ART))
   dir.viewGroup = 'ShowList'
   dir.Append(Function(DirectoryItem(sub_category, title="Le Zapping" , thumb=R("LeZapping.jpg")), Emission_cat='1830', stitle='zapping'))
-  dir.Append(Function(DirectoryItem(sub_category, title="Les Guignols" , thumb=R("LesGuignols.jpg")), Emission_cat='1784', stitle='info'))
+  dir.Append(Function(DirectoryItem(sub_category, title="Les Guignols" , thumb=R("LesGuignols.jpg")), Emission_cat='1784', stitle='guignols'))
   dir.Append(Function(DirectoryItem(sub_category, title="Le Petit Journal" , thumb=R("LePetitJournal.jpg")), Emission_cat='3351', stitle='le-petit-journal'))
   dir.Append(Function(DirectoryItem(sub_category, title="GroLand" , thumb=R("GroLand.jpg")), Emission_cat='1787', stitle='groland.con'))
   dir.Append(Function(DirectoryItem(sub_category, title="Salut Les Terriens" , thumb=R("terriens.jpg")), Emission_cat='3350', stitle='terriens'))
@@ -47,7 +47,7 @@ def sub_category (sender, Emission_cat, title = None, replaceParent=False, value
 	site_url='http://www.canalplus.fr/c/pid'+idd
 	fhtml=HTML.ElementFromURL(site_url)
 	string= XML.StringFromElement(fhtml)
-	lst= re.findall(mod+'.*vid=([0-9]*)',string)
+	lst= re.findall('like.*vid=([0-9]*)',string)
 	Evnt= max(lst)
 
 	base_address = 'http://service.canal-plus.com/video/rest/getVideosLiees/cplus/'+Evnt
