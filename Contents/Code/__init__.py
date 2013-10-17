@@ -31,8 +31,8 @@ def MainMenu():
   dir.Append(Function(DirectoryItem(sub_category, title="Les Guignols" , thumb=R("LesGuignols.jpg")), Emission_cat='1784', stitle='guignols'))
   dir.Append(Function(DirectoryItem(sub_category, title="Le Petit Journal" , thumb=R("LePetitJournal.jpg")), Emission_cat='3351', stitle='le-petit-journal'))
   dir.Append(Function(DirectoryItem(sub_category, title="GroLand" , thumb=R("GroLand.jpg")), Emission_cat='1787', stitle='groland.con'))
-  dir.Append(Function(DirectoryItem(sub_category, title="Salut Les Terriens" , thumb=R("terriens.jpg")), Emission_cat='3350', stitle='terriens'))
-  dir.Append(Function(DirectoryItem(sub_category, title="Papillon" , thumb=R("Papliion.jpg")), Emission_cat='3356', stitle='papillon'))
+  dir.Append(Function(DirectoryItem(sub_category, title="Salut Les Terriens" , thumb=R("icon-default.png")), Emission_cat='3350', stitle='terriens'))
+  dir.Append(Function(DirectoryItem(sub_category, title="Effet Papillon" , thumb=R("icon-default.png")), Emission_cat='3356', stitle='papillon'))
   return dir
 
 
