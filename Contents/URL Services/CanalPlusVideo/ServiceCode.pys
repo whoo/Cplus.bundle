@@ -1,0 +1,23 @@
+def NormalizeURL(url):
+	return url
+
+def PlayVideo(url, res):
+	return Redirect(url)
+
+
+def MediaObjectsForURL(url):
+	tb=url.split("&")
+	url=tb[0]
+	return [MediaObject(       container = Container.MP4,
+			video_codec = VideoCodec.H264,
+			audio_codec = AudioCodec.AAC,
+			audio_channels = 2,
+			optimized_for_streaming = True,
+			parts = [PartObject(key=Callback(PlayVideo, url = url,  res = 'hd'))]),
+	]
+
+
+def MetadataObjectForURL(url):
+	tb=url.split("&")
+	a=JSON.ObjectFromString(tb[1])
+	return VideoClipObject(title=a['titre'],thumb=a['thumb'],summary=a['summary'])

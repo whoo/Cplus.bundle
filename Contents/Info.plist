@@ -3,10 +3,20 @@
 <plist version="1.0">
 <dict>
 	<key>CFBundleIdentifier</key>
-	<string>com.plexapp.plugins.Cplus</string>
+	<string>com.plexapp.plugins.NCplus</string>
 	<key>PlexClientPlatforms</key>
 	<string>*</string>
 	<key>PlexFrameworkVersion</key>
 	<string>2</string>
+	<key>PlexURLServices</key>
+	<dict>
+		<key>CanalPlusVideo</key>
+		<dict>
+			<key>URLPattern</key>
+			<string>http://.*.canalplus.fr/.*</string>
+			<key>Identifier</key>
+			<string>com.plexapp.plugins.NCplus</string>
+		</dict>
+	</dict>
 </dict>
 </plist>
