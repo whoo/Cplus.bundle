@@ -25,8 +25,6 @@ def ListeCategories():
 	icon=None
 	idCategorie="39"
 	nom="X"
-#	oc.Append(Function(DirectoryItem(ListeVideos, title=nom, thumb=icon),idSousCategorie=idCategorie, nomSousCategorie="ZAPPING"))
-#	oc.Append(Function(DirectoryItem(ListeVideos, title=nom, thumb=icon),idSousCategorie=idCategorie, nomSousCategorie="LES_GUIGNOLS"))
 	oc.add(DirectoryObject(key=Callback(ListeVideos,idSousCategorie = idCategorie,nomSousCategorie="ZAPPING"),title="Zapping",thumb=R("LeZapping.jpg")))
 	oc.add(DirectoryObject(key=Callback(ListeVideos,idSousCategorie = idCategorie,nomSousCategorie="LES GUIGNOLS"),title="Les guignols",thumb=R("LesGuignols.jpg")))
 	oc.add(DirectoryObject(key=Callback(ListeVideos,idSousCategorie = idCategorie,nomSousCategorie="LE_PETIT_JOURNAL"),title="Le petit Journal",thumb=R("LePetitJournal.jpg")))
@@ -39,11 +37,9 @@ def ListeCategories():
 	return oc
 
 
-#Chosen sub-category's videos
 def ListeVideos(idSousCategorie, nomSousCategorie):
 	oc =ObjectContainer(title1="", title2=nomSousCategorie)
 	dirvideos = XML.ElementFromURL(BASE_URL + "getMEAs/cplus/" + idSousCategorie).xpath("//MEA[RUBRIQUAGE/RUBRIQUE='%s']"%(nomSousCategorie))
-#	for listv in dirvideos:
 
 	tb={}
 	for listv in dirvideos:
@@ -61,49 +57,14 @@ def ListeVideos(idSousCategorie, nomSousCategorie):
 			thumb = video.xpath('.//MEDIA/IMAGES/GRAND')[0].text
 			video_url = video.xpath('.//MEDIA/VIDEOS/HD')[0].text
 			if (video_url != None ):
-#				video_url="http://vod-flash.canalplus.fr/WWWPLUS/STREAMING/1311/ZAPPING_EMISSION_131116_CAN_382636_video_HD.mp4"
-			#"&%s&%s&%s"%(titre,thumb,description)
 				video_url=video_url.replace('rtmp://vod-fms.canalplus.fr/ondemand/videos','http://vod-flash.canalplus.fr/WWWPLUS/STREAMING')
-#			video_url=video_url.replace('rtmp://geo2-vod-fms.canalplus.fr/ondemand/geo2','http://vod-flash.canalplus.fr/WWWPLUS/STREAMING')
 				video_url=video_url+hack
-#			video_url="http://vod-flash.canalplus.fr/WWWPLUS/STREAMING/1311/ZAPPING_EMISSION_131116_CAN_382636_video_HD.mp4"
-
 				dd={'thumb':thumb,'summary':description,'titre':titre}
 				tb[idv]={'video_url':video_url+"&"+JSON.StringFromObject(dd),'thumb':thumb,'description':description,'titre':titre}
 
 	for idv in sorted(tb,reverse=True):
-		
 		dd=MovieObject(url=tb[idv]['video_url'],title=tb[idv]['titre'],summary=tb[idv]['description'],thumb=tb[idv]['thumb'])
 		oc.add(dd)
 	
 	return oc
 
-#Video chosen + related videos
-def ListeVideosLiees(sender,idVideo, nomSousCategorie):
-	oc = ObjectContainer(title2 = "video", art = None)
-#	dir=MediaContainer(title1="", title2="Video", replaceParent=None)
-
-	
-	videosXml = XML.ElementFromURL(BASE_URL + "getVideosLiees/cplus/" + idVideo)
-	videos = videosXml.xpath("//VIDEO[ID='"+idVideo+"']")
-	hack="?secret=pqzerjlsmdkjfoiuerhsdlfknaes"	
-	videos.extend(videosXml.xpath("//VIDEO[ID!='"+idVideo+"']"))
-	for video in videos:
-		titre = video.xpath('./INFOS/TITRAGE/TITRE')[0].text
-		soustitre = video.xpath('./INFOS/TITRAGE/SOUS_TITRE')[0].text
-		if soustitre.strip() != "":
-			titre =  titre + " - " + soustitre
-
-		description = video.xpath('./INFOS/DESCRIPTION')[0].text
-		thumb = video.xpath('.//MEDIA/IMAGES/GRAND')[0].text
-		video_url = video.xpath('.//MEDIA/VeDEOS/HD/text()')[0]
-		#video_url = video.xpath('.//URL/text()')[0]
-		#oc.add(VideoItem(video_url,titre,"",description,thumb))
-		
-		#MediaObjectsForURL(video_url)
-		dd=MovieObject(url=video_url,title=titre,summary=description,thumb=thumb)
-		oc.add(dd)
-		#	oc.add(MovieObject(url=video_url, title=titre, summary=description,
-		#	thumb=Resource.ContentsOfURLWithFallback(url=thumb, fallback="icon-default.png")))
-		#	dir.Append(VideoItem(video_url,titre,'',description,'',thumb))
-	return oc
