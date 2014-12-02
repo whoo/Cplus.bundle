@@ -1,6 +1,5 @@
 import re
 BASE_URL = "http://service.canal-plus.com/video/rest/"
-# URL http://service.canal-plus.com/video/rest/initPlayer
 
 PLUGIN_PREFIX           = "/video/NCplus"
 PLUGIN_ID               = "com.plexapp.plugins.CNplus"
@@ -31,7 +30,6 @@ def ListeCategories():
 	oc.add(DirectoryObject(key=Callback(ListeVideos,idSousCategorie = "39",nomSousCategorie="LE.JT.DE.CANAL."),title="Le JT",thumb=R("jtcanal.jpg")))
 	oc.add(DirectoryObject(key=Callback(ListeVideos,idSousCategorie = "130",nomSousCategorie="GROLAND"),title="GroLand",thumb=R("GroLand.jpg")))
 	oc.add(DirectoryObject(key=Callback(ListeVideos,idSousCategorie = "1080",nomSousCategorie="SALUT.LES.TERRIENS"),title="Salut Les Terriens",thumb=R("Slt.jpg")))
-	oc.add(DirectoryObject(key=Callback(ListeVideos,idSousCategorie = "896",nomSousCategorie="EMISSION"),title="Journal du Hard",thumb=R("journalX.jpg")))
 	oc.add(DirectoryObject(key=Callback(ListeVideos,idSousCategorie = "1080",nomSousCategorie="LES_NOUVEAUX_EXPLORATEURS"),title="Les nouveaux Explorateurs",thumb=R("Explorateurs.jpg")))
 	oc.add(DirectoryObject(key=Callback(ListeVideos,idSousCategorie = "1080",nomSousCategorie="LE_SUPPLEMENT"),title="Le supplement politique",thumb=R("supplementpolitique.jpg")))
 	oc.add(DirectoryObject(key=Callback(ListeVideos,idSousCategorie = "105",nomSousCategorie="L_OEIL_DE_LINKS"),title="Oeil de links",thumb=R("oeildelinks.jpg")))
@@ -56,7 +54,7 @@ def ListeVideos(idSousCategorie, nomSousCategorie):
 			soustitre = video.xpath('./INFOS/TITRAGE/SOUS_TITRE')[0].text
 			if soustitre.strip() != "":
 				titre =  titre + " - " + soustitre
-			description = soustitre + "\n" + video.xpath('./INFOS/DESCRIPTION')[0].text
+                        description = soustitre + "\n" + video.xpath('./INFOS/DESCRIPTION')[0].text.replace('"','\'')
 			thumb = video.xpath('.//MEDIA/IMAGES/GRAND')[0].text
 			video_url = video.xpath('.//MEDIA/VIDEOS/HD')[0].text
 			if (video_url != None ):
