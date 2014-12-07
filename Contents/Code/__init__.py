@@ -52,9 +52,10 @@ def ListeVideos(idSousCategorie, nomSousCategorie):
 			idv=video.xpath('./ID')[0].text
 			titre = video.xpath('./INFOS/TITRAGE/TITRE')[0].text
 			soustitre = video.xpath('./INFOS/TITRAGE/SOUS_TITRE')[0].text
+                        duration = video.xpath('./DURATION')[0].text
 			if soustitre.strip() != "":
-				titre =  titre + " - " + soustitre
-                        description = soustitre + "\n" + video.xpath('./INFOS/DESCRIPTION')[0].text.replace('"','\'')
+				titre =  titre + " - " + soustitre 
+                        description = soustitre+ " ("+str(int(duration)/60)+"min.)" + "\n" + video.xpath('./INFOS/DESCRIPTION')[0].text.replace('"','\'')
 			thumb = video.xpath('.//MEDIA/IMAGES/GRAND')[0].text
 			video_url = video.xpath('.//MEDIA/VIDEOS/HD')[0].text
 			if (video_url != None ):
