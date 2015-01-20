@@ -24,7 +24,7 @@ def ListeCategories():
 
 	icon=None
 	oc.add(DirectoryObject(key=Callback(ListeVideos,idSousCategorie = "39",nomSousCategorie="ZAPPING"),title="Zapping",thumb=R("LeZapping.jpg")))
-	oc.add(DirectoryObject(key=Callback(ListeVideos,idSousCategorie = "39",nomSousCategorie="LES.GUIGNOLS"),title="Les guignols",thumb=R("LesGuignols.jpg")))
+	oc.add(DirectoryObject(key=Callback(ListeVideos,idSousCategorie = "39",nomSousCategorie="LES_GUIGNOLS"),title="Les guignols",thumb=R("LesGuignols.jpg")))
 	oc.add(DirectoryObject(key=Callback(ListeVideos,idSousCategorie = "39",nomSousCategorie="LE_PETIT_JOURNAL"),title="Le petit Journal",thumb=R("LePetitJournal.jpg")))
 	oc.add(DirectoryObject(key=Callback(ListeVideos,idSousCategorie = "39",nomSousCategorie="LE_GRAND_JOURNAL"),title="Le Grand Journal",thumb=R("LeGrandJournal.jpg")))
 	oc.add(DirectoryObject(key=Callback(ListeVideos,idSousCategorie = "39",nomSousCategorie="LE.JT.DE.CANAL."),title="Le JT",thumb=R("jtcanal.jpg")))
@@ -53,6 +53,8 @@ def ListeVideos(idSousCategorie, nomSousCategorie):
 			titre = video.xpath('./INFOS/TITRAGE/TITRE')[0].text
 			soustitre = video.xpath('./INFOS/TITRAGE/SOUS_TITRE')[0].text
                         duration = video.xpath('./DURATION')[0].text
+                        if (duration is None):
+                            duration=10
 			if soustitre.strip() != "":
 				titre =  titre + " - " + soustitre 
                         description = soustitre+ " ("+str(int(duration)/60)+"min.)" + "\n" + video.xpath('./INFOS/DESCRIPTION')[0].text.replace('"','\'')
