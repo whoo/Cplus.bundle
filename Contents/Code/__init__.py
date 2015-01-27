@@ -71,7 +71,10 @@ def ListeVideos(Video):
 				titre =  titre + " - " + soustitre 
                         description = soustitre+ " ("+str(int(duration)/60)+"min.)" + "\n" + video.xpath('./INFOS/DESCRIPTION')[0].text.replace('"','\'')
 			thumb = video.xpath('.//MEDIA/IMAGES/GRAND')[0].text
-			video_url = video.xpath('.//MEDIA/VIDEOS/HD')[0].text
+                        if (video.xpath('.//MEDIA/VIDEOS/HD')):
+         		    video_url = video.xpath('.//MEDIA/VIDEOS/HD')[0].text
+                        else:
+                            video_url = None
                         if ( int(duration)/60 >Video['duree']):
         			if (video_url != None ):
         				video_url=video_url.replace('rtmp://vod-fms.canalplus.fr/ondemand/videos','http://vod-flash.canalplus.fr/WWWPLUS/STREAMING')
