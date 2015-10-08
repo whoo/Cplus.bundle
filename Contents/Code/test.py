@@ -11,7 +11,7 @@ data=urllib.urlopen(url).read()
 
 xml=etree.XML(data)
 tb={}
-for a in xml.xpath("//MEA[RUBRIQUAGE/RUBRIQUE='LE_JT_DE_CANALPLUS']"):
+for a in xml.xpath("//MEA[RUBRIQUAGE/RUBRIQUE='LE_PETIT_JOURNAL']"):
 	index= a.xpath('./ID/text()')[0]
 	url='http://service.canal-plus.com/video/rest/getVideosLiees/cplus/'+index
 	print "get %s"%(index)

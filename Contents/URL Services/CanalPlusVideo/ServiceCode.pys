@@ -1,7 +1,12 @@
+
+#RE_VIDEO_URL = Regex('http://vod-flash.canalplus.fr/WWWPLUS/GEO5','http://album.voyez.ca/WWWPLUS/GEO5')
+
+
 def NormalizeURL(url):
 	return url
 
 def PlayVideo(url, res):
+	url =url.replace('http://vod-flash.canalplus.fr/WWWPLUS/GEO5','http://album.voyez.ca/WWWPLUS/GEO5')
 	return Redirect(url)
 
 

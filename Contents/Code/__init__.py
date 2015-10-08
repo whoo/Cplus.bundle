@@ -78,7 +78,8 @@ def ListeVideos(Video):
                         if ( int(duration)/60 >Video['duree']):
         			if (video_url != None ):
         				video_url=video_url.replace('rtmp://vod-fms.canalplus.fr/ondemand/videos','http://vod-flash.canalplus.fr/WWWPLUS/STREAMING')
-        				video_url=video_url.replace('rtmp://ugc-vod-fms.canalplus.fr/ondemand/videos','http://vod-flash.canalplus.fr/WWWPLUS/STREAMING')	
+        				video_url=video_url.replace('rtmp://ugc-vod-fms.canalplus.fr/ondemand/videos','http://vod-flash.canalplus.fr/WWWPLUS/STREAMING')
+                                        #video_url=video_url.replace('http://vod-flash.canalplus.fr/WWWPLUS/GEO5','http://album.voyez.ca/WWWPLUS/GEO5')
         				video_url=video_url+hack
         				dd={'thumb':thumb,'summary':description,'titre':titre}
         				tb[idv]={'video_url':video_url+"&"+JSON.StringFromObject(dd),'thumb':thumb,'description':description,'titre':titre}
